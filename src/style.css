@@ -1,12 +1,16 @@
 .biscuit-caret {
-  width: 12px;
-  height: 2px;
-  background: red;
+  width: 8px;
+  height: 1px;
+  background: black;
   opacity: 1;
   position: absolute;
   opacity: var(--opacity);
   top: calc(var(--y) + 1.2em);
   left: 0;
+}
+
+* {
+  caret-color: black;
 }
 
 .biscuit-caret[data-transition] {

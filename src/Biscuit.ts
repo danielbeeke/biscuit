@@ -5,7 +5,7 @@ function getCaretCoordinates() {
   if (selection && selection.rangeCount !== 0) {
     const range = selection.getRangeAt(0).cloneRange()
     range.collapse(true)
-    const { x, y } = range.getClientRects()[0]
+    const { x, y } = range.getClientRects()?.[0]
     return { x, y } 
   }
 }
@@ -103,8 +103,11 @@ export class Biscuit {
     element.addEventListener('keydown', (event) => {
       const direction = event.key === 'ArrowLeft' ? 'left' : 'right'
 
-      if (this.nextStop === direction) {
+      if (['ArrowLeft', 'ArrowRight'].includes(event.key) && this.nextStop === direction) {
         event.preventDefault()
+      }
+      else {
+        this.nextStop = ''
       }
     })
 
