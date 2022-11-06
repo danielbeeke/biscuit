@@ -1,0 +1,16 @@
+.biscuit-caret {
+  width: 12px;
+  height: 2px;
+  background: red;
+  opacity: 1;
+  position: absolute;
+  opacity: var(--opacity);
+  top: calc(var(--y) + 1.2em);
+  left: 0;
+  /* transition: transform .3s ease-in-out; */
+  transform: translateX(calc(var(--x) + var(--second)))  translateX(-100%);
+}
+
+#editable {
+  padding: 2em;
+}
