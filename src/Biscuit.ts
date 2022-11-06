@@ -85,11 +85,10 @@ const getStyles = (node: Node, stopAt: HTMLElement) => {
 }
 
 export class Biscuit {
-
-  #previousDirection: '' | 'left' | 'right' = ''
-  #isSecond = false
-
+  
   horizontalCaret: HTMLDivElement
+
+  nextStop = ''
 
   constructor (element: HTMLElement) {
     const isSupported = window.getSelection !== undefined
@@ -102,46 +101,35 @@ export class Biscuit {
     element.appendChild(this.horizontalCaret)
 
     element.addEventListener('keydown', (event) => {
-      const { left, right } = getElements()
+      const direction = event.key === 'ArrowLeft' ? 'left' : 'right'
 
-      if (left && right) {
-        if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-          const direction = event.key === 'ArrowLeft' ? 'left' : 'right'
-
-          if (direction === this.#previousDirection) {
-            this.horizontalCaret.style.setProperty('--second', '0%')
-          }
-          else {
-            this.horizontalCaret.style.setProperty('--second', '100%')
-
-            console.log('first')
-            this.#previousDirection = ''
-            event.preventDefault()
-          }
-
-          this.#previousDirection = direction
-        }
-
-      }
-      else {
-        this.#previousDirection = ''
+      if (this.nextStop === direction) {
+        event.preventDefault()
       }
     })
 
-
     element.addEventListener('keyup', (event) => {
       const { left, right } = getElements()
+      const position = getCaretCoordinates()
 
-      if (left && right) {
-        if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-          const position = getCaretCoordinates()
+      if (position && left && right && ['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        const direction = event.key === 'ArrowLeft' ? 'left' : 'right'
+        const oppositeDirection = event.key === 'ArrowLeft' ? 'right' : 'left'
 
-          if (position) {
-            this.horizontalCaret.style.setProperty('--x', position.x + 'px')
-            this.horizontalCaret.style.setProperty('--y', position.y + 'px')
-            this.horizontalCaret.style.setProperty('--opacity', '1')
-          }
+        this.horizontalCaret.style.setProperty('--x', position.x + 'px')
+        this.horizontalCaret.style.setProperty('--y', position.y + 'px')
+        this.horizontalCaret.style.setProperty('--opacity', '1')
+
+        if (this.nextStop === direction) {
+          this.horizontalCaret.dataset.position = direction
+          this.nextStop = ''
         }
+        else {
+          this.nextStop = direction
+          this.horizontalCaret.dataset.position = oppositeDirection
+        }
+  
+        event.preventDefault()
       }
       else {
         this.horizontalCaret.style.setProperty('--opacity', '0')

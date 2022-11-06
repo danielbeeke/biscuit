@@ -7,8 +7,18 @@
   opacity: var(--opacity);
   top: calc(var(--y) + 1.2em);
   left: 0;
-  /* transition: transform .3s ease-in-out; */
-  transform: translateX(calc(var(--x) + var(--second)))  translateX(-100%);
+}
+
+.biscuit-caret[data-transition] {
+  transition: transform .3s ease-in-out;
+}
+
+.biscuit-caret[data-position="left"] {
+  transform: translateX(var(--x)) translateX(-100%);
+}
+
+.biscuit-caret[data-position="right"] {
+  transform: translateX(var(--x));
 }
 
 #editable {
